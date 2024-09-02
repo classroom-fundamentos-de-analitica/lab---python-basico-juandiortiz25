@@ -11,7 +11,15 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+def open_data():
+    with open("data.csv", "r") as file:
+        filas = file.readlines()
+        return filas
 
+# Limpiamos la data, la cual está separada por \t
+def clean_data():
+    filas = open_data()
+    return [fila.split("\t") for fila in filas]
 
 def pregunta_01():
     """
@@ -21,7 +29,7 @@ def pregunta_01():
     214
 
     """
-    return
+    return sum([int(fila[1]) for fila in clean_data()])
 
 
 def pregunta_02():
@@ -39,8 +47,15 @@ def pregunta_02():
     ]
 
     """
-    return
-
+    data = clean_data()
+    dicc = {}
+    for fila in data:
+        if fila[0] in dicc:
+            dicc[fila[0]] += 1
+        else:
+            dicc[fila[0]] = 1
+            
+    return sorted(dicc.items())
 
 def pregunta_03():
     """
@@ -57,8 +72,15 @@ def pregunta_03():
     ]
 
     """
-    return
-
+    data = clean_data()
+    dicc = {}
+    for fila in data:
+        if fila[0] in dicc:
+            dicc[fila[0]] += int(fila[1])
+        else:
+            dicc[fila[0]] = int(fila[1])
+            
+    return sorted(dicc.items())
 
 def pregunta_04():
     """
@@ -82,8 +104,19 @@ def pregunta_04():
     ]
 
     """
-    return
-
+    data = clean_data()
+    dicc = {}
+    
+    fechas = [z[2] for z in data]
+    fechas = [z.split("-") for z in fechas]
+    
+    for fila in fechas:
+        if fila[1] in dicc:
+            dicc[fila[1]] += 1
+        else:
+            dicc[fila[1]] = 1
+            
+    return sorted(dicc.items())
 
 def pregunta_05():
     """
@@ -100,8 +133,17 @@ def pregunta_05():
     ]
 
     """
-    return
+    data = clean_data()
 
+    dicc = {}
+
+    for fila in data:
+        if fila[0] in dicc:
+            dicc[fila[0]] = (max(dicc[fila[0]][0], int(fila[1])), min(dicc[fila[0]][1], int(fila[1])))
+        else:
+            dicc[fila[0]] = (int(fila[1]), int(fila[1]))
+
+    return sorted([(key, value[0], value[1]) for key, value in dicc.items()])
 
 def pregunta_06():
     """
@@ -125,8 +167,21 @@ def pregunta_06():
     ]
 
     """
-    return
-
+    data = clean_data()
+    dicc = {}
+    
+    data2 = [z[4] for z in data]
+    data2 = [z.strip().split(",") for z in data2]
+    
+    for x in data2:
+        for y in x:
+            llave, valor = y.split(":")
+            if llave in dicc:
+                dicc[llave]= (max(dicc[llave][0], int(valor)), min(dicc[llave][1], int(valor)))
+            else:
+                dicc[llave] = (int(valor), int(valor))
+    
+    return sorted([(llave, valor[1], valor[0]) for llave, valor in dicc.items()])
 
 def pregunta_07():
     """
@@ -149,8 +204,16 @@ def pregunta_07():
     ]
 
     """
-    return
+    data = clean_data()
+    dicc = {}
+    
+    for fila in data:
+        if fila[1] in dicc:
+            dicc[fila[1]].append(fila[0])
+        else:
+            dicc[fila[1]] = [fila[0]]
 
+    return sorted([(int(llave), valor) for llave, valor in dicc.items()])
 
 def pregunta_08():
     """
@@ -174,8 +237,16 @@ def pregunta_08():
     ]
 
     """
-    return
-
+    data = clean_data()
+    dicc = {}
+    
+    for fila in data:
+        if fila[1] in dicc:
+            dicc[fila[1]].add(fila[0])
+        else:
+            dicc[fila[1]] = {fila[0]}
+    
+    return sorted([(int(llave), sorted(list(valor))) for llave, valor in dicc.items()])
 
 def pregunta_09():
     """
@@ -197,8 +268,21 @@ def pregunta_09():
     }
 
     """
-    return
+    data = clean_data()
+    dicc = {}
+    
+    data2 = [z[4] for z in data]
+    data2 = [z.strip().split(",") for z in data2]
+    
+    for x in data2:
+        for y in x:
+            llave,_ = y.split(":")
+            if llave in dicc:
+                dicc[llave] += 1
+            else:
+                dicc[llave] = 1
 
+    return dict(sorted(dicc.items()))
 
 def pregunta_10():
     """
@@ -218,8 +302,9 @@ def pregunta_10():
 
 
     """
-    return
-
+    data = clean_data()
+    
+    return [(fila[0], len(fila[3].split(",")), len(fila[4].split(","))) for fila in data]
 
 def pregunta_11():
     """
@@ -239,8 +324,17 @@ def pregunta_11():
 
 
     """
-    return
-
+    data = clean_data()
+    dicc = {}
+    
+    for fila in data:
+        for letra in fila[3].split(","):
+            if letra in dicc:
+                dicc[letra] += int(fila[1])
+            else:
+                dicc[letra] = int(fila[1])
+    
+    return dict(sorted(dicc.items()))
 
 def pregunta_12():
     """
@@ -257,4 +351,16 @@ def pregunta_12():
     }
 
     """
+    data = clean_data()
+    dicc = {}
+    
+    for fila in data:
+        for letra in fila[4].split(","):
+            _, valor = letra.split(":")
+            if fila[0] in dicc:
+                dicc[fila[0]] += int(valor)
+            else:
+                dicc[fila[0]] = int(valor)
+    
+    return dict(sorted(dicc.items()))
     return
