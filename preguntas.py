@@ -55,7 +55,7 @@ def pregunta_02():
         else:
             dicc[fila[0]] = 1
             
-    return sorted(dic.items())
+    return sorted(dicc.items())
 
 def pregunta_03():
     """
@@ -116,7 +116,7 @@ def pregunta_04():
         else:
             dicc[fila[1]] = 1
             
-    return sorted(dic.items())
+    return sorted(dicc.items())
 
 def pregunta_05():
     """
@@ -213,7 +213,7 @@ def pregunta_07():
         else:
             dicc[fila[1]] = [fila[0]]
 
-    return sorted([(int(llave), valor) for llave, valor in dic.items()])
+    return sorted([(int(llave), valor) for llave, valor in dicc.items()])
 
 def pregunta_08():
     """
